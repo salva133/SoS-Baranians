@@ -105,7 +105,20 @@ points at the vanilla human tiles and can stay that way.
 === TUNING =================================================================
 
 Rarity            BARANIAN.txt -> POPULATION MAX / GROWTH, and CIVIC_IMMIGRATION>MUL
-Reproduction      PHYSICS_REPRODUCTION_SPEED>MUL and PHYSICS_REPRODUCTION_AGE>MUL
+Reproduction      PHYSICS_REPRODUCTION_SPEED>MUL, currently 0.055.
+                  Replacement level sits at about 0.047, so this is a little
+                  above the natural death rate. Measured against the game's own
+                  formulas (400 year lifespan, fertile from year 21 to 210):
+                      0.040   -11 % per century, dies out
+                      0.047     0 %, stable
+                      0.050    +4 % per century, doubles in ~1700 years
+                      0.055   +11 % per century, doubles in ~660 years
+                      0.060   +19 % per century, doubles in ~395 years
+                      0.080   +47 % per century, doubles in ~180 years
+                  PHYSICS_REPRODUCTION_AGE is deliberately left at default.
+                  Shrinking the fertile window instead of the rate makes the
+                  population lurch between extinction and explosion, because
+                  only a few percent of them are fertile at any moment.
 Lifespan          PHYSICS_DEATH_AGE>MUL   (base is 100 years, 4.0 = 400 years)
 Noble slots       CIVIC_NOBLES_MAX>ADD and CIVIC_NOBLES_RANKS_MAX>ADD
                   These are weighted by the Baranian share of your population,
