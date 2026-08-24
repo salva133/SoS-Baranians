@@ -1,0 +1,5 @@
+VERSION: "1.0",
+NAME: "Baranians",
+DESC: "Adds the Baranians, a rare and immensely powerful species from another star that looks almost human.",
+AUTHOR: "Steve",
+INFO: "Race mod for Songs of Syx 0.71",

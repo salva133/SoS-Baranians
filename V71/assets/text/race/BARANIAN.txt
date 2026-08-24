@@ -1,0 +1,122 @@
+NAME: "Baranian",
+NAMES: "Baranians",
+POSSESSIVE: "Baranian",
+POSSESSIVES: "Baranian",
+PRONOUN_HE: ["he", "she",],
+PRONOUN_HEC: ["He", "She",],
+PRONOUN_HIM: ["him", "her",],
+PRONOUN_HIMC: ["Him", "Her",],
+PRONOUN_HIS: ["his", "her",],
+PRONOUN_HISC: ["His", "Her",],
+PRONOUN_HIMSELF: ["himself", "herself",],
+PRONOUN_HIMSELFC: ["Himself", "Herself",],
+PRONOUN_CHILD: ["son", "daughter",],
+PRONOUN_CHILDC: ["Son", "Daughter",],
+
+HELLO: [
+	"The Order stands",
+	"Under a colder sun",
+	"Long may you endure",
+	"Well met, brief one",
+	"Greetings",
+	"The star remembers",
+],
+GOODBYE: [
+	"The Order prevails",
+	"Until the next age",
+	"Endure well",
+	"Go quietly",
+	"Farewell",
+],
+CURSE: [
+	"By the dead star!",
+	"Baran's ashes!",
+	"By the long dark!",
+	"Void take it!",
+],
+INSULT: [
+	"mayfly",
+	"short-lived",
+	"child",
+	"ember",
+	"half-thought",
+],
+INSULTING: [
+	"fleeting",
+	"unfinished",
+	"hurried",
+	"dim",
+	"brittle",
+],
+LORD: [
+	"Lord",
+	"Sovereign",
+	"Keeper",
+],
+CITY: [
+	"seat",
+	"city",
+	"citadel",
+],
+OTHERS: [
+	"natives",
+	"the brief",
+],
+SELVES: [
+	"kindred",
+	"the remnant",
+],
+SELF: [
+	"kinsman",
+	"remnant",
+],
+CHILDREN: [
+	"scions",
+],
+
+DESC:
+"Baranians are near-immortal exiles from a dead star. Peerless scholars, administrators and warriors, and born rulers. They almost never breed and almost never migrate, so a settlement will only ever hold a handful of them.",
+
+DESC_LONG:
+"The Baranians came down from a star that no longer burns. They wear a shape almost indistinguishable from man, which some take as kinship and others as camouflage.
+
+A Baranian lives for centuries. In that span one of them will learn more, build more and kill more than a dozen generations of anyone else. They are without equal in research, administration, statecraft and open battle, and they make extraordinary nobles.
+
+The price is the future. Baranians conceive almost never, and their kind will not travel to a city that merely calls for workers. However mighty your Baranians are, they will always be a few, and every one you lose is gone for good.
+
+Bread, Meat, Fish and Eggs are their favoured foods.
+",
+
+ARMY_NAMES: [
+	"The Ashen Order",
+	"The Long Watch",
+	"Wardens of the Dead Star",
+	"The Undiminished",
+	"The Last Descent",
+	"Blades of Baran",
+	"The Silent Column",
+	"The Second Exile",
+	"Keepers of the Cold Fire",
+	"The Unhurried",
+	"The Starless Host",
+	"The Remnant Guard",
+],
+
+CHALLENGE: "Hard",
+
+PROS: [
+	"Live for centuries",
+	"Peerless at research, administration and statecraft",
+	"Devastating soldiers",
+	"Born nobles, and allow more nobles and promotions",
+	"Sane, lawful and loyal",
+	"Low upkeep and rarely fall ill",
+],
+
+CONS: [
+	"Almost never reproduce",
+	"Almost never immigrate",
+	"Very long childhood",
+	"Poor miners and refiners",
+	"Expect grand surroundings",
+],

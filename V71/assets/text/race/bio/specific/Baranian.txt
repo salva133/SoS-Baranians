@@ -1,0 +1,56 @@
+DREAMS: [
+	"Has always dreamt of being a {RND_PROFESSION}.",
+	"Intends to become a {RND_PROFESSION}, and has set aside a century for it.",
+	"Remembers the star. Will not speak of it.",
+	"Is quietly compiling a history of your reign, and expects to outlive several sequels.",
+	"Keeps a ledger of every promise anyone has ever made to {HIM}.",
+	"Finds the haste of the natives endearing, the way one finds a small animal endearing.",
+	"Has been meaning to finish a book {HE} started before your grandparents were born.",
+	"Believes the exile was a mistake, and that someone is still coming to correct it.",
+	"Regards Cretonians as the only species with a sense of proportion.",
+	"Was once mistaken for a Human and has never fully recovered from the insult.",
+	"Considers Garthimi a problem that nobody bothers to solve.",
+	"Has outlived every friend {HE} ever made here, and has stopped making any.",
+],
+
+TRAIT: {
+
+},
+
+HAPPY: [
+	"Judges your {RACE_CITY} adequate, which from {HIM} is high praise. Still, {HE} noted:",
+	"Concedes the {RACE_CITY} is well run, then listed the following anyway:",
+	"Took a long time to answer, and then said only:",
+	"Wants for nothing, but expects you will want to hear this:",
+],
+HAPPY_SOSO: [
+	"Considers your {RACE_CITY} a reasonable draft, and suggests:",
+	"Is patient with your {RACE_CITY}, and offers:",
+	"Notes that these matters have gone unattended:",
+	"Observes, without accusation, that the {RACE_CITY} lacks:",
+],
+HAPPY_NO: [
+	"Has seen better cities fall for smaller reasons, and lists:",
+	"Says nothing for a while, then names the failings:",
+	"Reminds you that {HE} will still be here when this is remembered, and asks for:",
+	"Speaks with great courtesy and no warmth:",
+],
+NOTHING: [
+	"Nothing more can be done. Your {RACE_CITY} would satisfy the Order itself.",
+],
+FUNNY: [
+	"Milord will forgive the observation that {HIS} entire dynasty is, to {HIM}, a season.",
+	"Suggests Milord eat more vegetables. {HE} has watched a great many lords die of not doing so.",
+	"Asks that the throne be reinforced. {HE} intends to be advising this seat for some time.",
+],
+
+STATS_MORE: {
+	STORED_GEM: [
+		"Coin is a fashion. Gems are a fact. Vault the difference, Milord.",
+		"Every treasury {HE} has watched collapse was full of coin and empty of gems.",
+	],
+},
+
+STATS_LESS: {
+
+},
