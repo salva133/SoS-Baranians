@@ -75,14 +75,14 @@ CHILDREN: [
 ],
 
 DESC:
-"Baranians are near-immortal exiles from a dead star. Peerless scholars, administrators and warriors, and born rulers. They almost never breed and almost never migrate, so a settlement will only ever hold a handful of them.",
+"Baranians are near-immortal exiles from a dead star. Peerless scholars, administrators and warriors, and born rulers. They breed once in a lifetime and almost never migrate, so a settlement will only ever hold a handful of them.",
 
 DESC_LONG:
 "The Baranians came down from a star that no longer burns. They wear a shape almost indistinguishable from man, which some take as kinship and others as camouflage.
 
 A Baranian lives for centuries. In that span one of them will learn more, build more and kill more than a dozen generations of anyone else. They are without equal in research, administration, statecraft and open battle, and they make extraordinary nobles.
 
-The price is the future. Baranians conceive almost never, and their kind will not travel to a city that merely calls for workers. However mighty your Baranians are, they will always be a few, and every one you lose is gone for good.
+The price is the future. A Baranian bears about one child in four centuries, and their kind will not travel to a city that merely calls for workers. The line holds and slowly lengthens, but it never swells. However mighty your Baranians are, they will always be a few, and every one you lose costs you a hundred years.
 
 Bread, Meat, Fish and Eggs are their favoured foods.
 ",
@@ -114,7 +114,7 @@ PROS: [
 ],
 
 CONS: [
-	"Almost never reproduce",
+	"Bear roughly one child in an entire lifetime",
 	"Almost never immigrate",
 	"Very long childhood",
 	"Poor miners and refiners",
