@@ -1044,3 +1044,33 @@ multiplier. `CitizenBoost.update` returns the raw boostable value and `CitizenMa
 prints it with `GFORMAT.perc` unnormalised, so the multiplier is a clean linear factor.
 What fell was `fulfillment`, through `HAPPINESS_EXPONENT: 2.65` in `init/config/Sett.txt`,
 which turns a linear loss of standing points into a cubic one.
+
+### 1.19
+
+`BEHAVIOUR_LOYALTY>ADD` raised from 0.5 to 0.8, which puts the emigration cliff within
+two percent of nothing.
+
+The break point itself is not moddable. `EventCitizen.breakPoint` is a
+`public static final double` of 0.85 in compiled Java. What is reachable is the value
+compared against it. `loyaltyTarget` is built by `BUtil.value` as
+`(0 + happiness + race adds) x race muls`, and happiness is never negative, so the race
+add is a floor under loyalty that no amount of misery can undercut.
+
+| `LOYALTY>ADD` | well run (0.70) | normal (0.60) | badly run (0.40) |
+| ---: | ---: | ---: | ---: |
+| 0.50 | 14.6 % | 23.7 % | 48.8 % |
+| 0.70 | 4.6 % | 9.9 % | 30.7 % |
+| **0.80** | **0.6 %** | **1.9 %** | **13.2 %** |
+| 0.84 | never | never | 1.3 % |
+| 0.85 | never | never | never |
+
+Figures are the citizen share below which they emigrate.
+
+At 0.85 the floor meets the break point and `getAmount` returns zero unconditionally.
+That would also end riots, strikes and brawls for the race, because
+`EventCitizen.update` feeds all of them from the same per-race figure. 0.8 leaves the
+machinery alive: a catastrophically run city can still lose Baranians, it simply has to
+be catastrophic.
+
+One side effect worth noting: `STANDINGS` publishes `LOYALTY_<race>` as a faction
+GVALUE, which world-map conditions can read. Raising the floor raises that too.
