@@ -866,16 +866,37 @@ own population ramp in `StatsReproduction` multiplies on top of this, so the eff
 rate still climbs from a fifth of nominal towards full as the city approaches 2000
 citizens.
 
-Median year at which a colony of four founders reaches a given size, ten simulated
+Median year at which a colony of ten founders reaches a given size, eight simulated
 runs against the engine's reproduction loop and death distribution:
 
 | Size | at 1.0 | at 2.0 |
 | ---: | ---: | ---: |
-| 50 | 63 | 42 |
-| 100 | 82 | 57 |
-| 200 | 99 | 71 |
-| 500 | 124 | 89 |
-| 1000 | 143 | 103 |
+| 50 | 38 | 26 |
+| 100 | 58 | 40 |
+| 200 | 78 | 54 |
+| 500 | 103 | 72 |
+| 1000 | 120 | 86 |
 
 No run went extinct at either rate. The doubling shortens the climb to a thousand by
-about forty years, which is roughly one long Baranian lifetime.
+about thirty-five years, and ten founders reach it some thirty-five years earlier than
+four would.
+
+### 1.13
+
+`PHYSICS_REPRODUCTION_SPEED>MUL` back to 1.0. The target was a thousand Baranians by
+year 120 from ten founders, and a search over the multiplier lands almost exactly on
+the human rate:
+
+| Multiplier | Median year at 1000 |
+| ---: | ---: |
+| 0.90 | 127 |
+| 0.95 | 123 |
+| 0.98 | 123 |
+| **1.00** | **120** |
+| 1.02 | 120 |
+| 1.10 | 116 |
+| 2.00 | 86 |
+
+Nine runs per multiplier, all of them reaching a thousand. The line is kept at an
+explicit 1.0 rather than deleted; a multiplier of one is identity, so the file states
+the intent without changing the result.
