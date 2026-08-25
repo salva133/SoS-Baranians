@@ -986,3 +986,36 @@ thirteen tiles, and functions as a war beast rather than a people. Six times its
 attack is fifty-one times the engine base. Restricting the reference to the six
 playable races gives `BLUNT_ATTACK>MUL: 9.0`, `BLUNT_DEFENCE>MUL: 6.0` and
 `MORALE>MUL: 7.2` instead; the other twelve rows are unchanged.
+
+### 1.17
+
+**Reverses 1.7.** `PREFERRED > OTHER_RACES` dropped from 1.0 to 0.01 for every race,
+and `STATS > ENVIRONMENT_OTHERS` overridden at weight 20, up from the vanilla 2.5.
+0.01 is the value vanilla uses for genuine hatred, as ARGONOSH does toward CANTOR and
+TILAPI.
+
+1.7 removed the discrimination penalty because a city carried by foreign slaves would
+otherwise have made Baranians miserable. That reasoning was wrong, and the reason is
+the same one that makes 1.15 work: `StatsEnv.OTHERS.getDD` is evaluated per `HCLASS`,
+and a citizen's standing is evaluated with `s = CITIZEN`. Slaves are never counted.
+The Baranians can hold as many foreign slaves as the city will feed and still despise
+every free foreigner in it.
+
+With `OTHER_RACES` at 0.01 the stat collapses to very nearly the Baranian share of the
+citizenry, so it stacks on `POPULATION_MAJORITY` rather than measuring something new.
+That is the intended reading: the two entries are one rule stated twice, weighted 60
+points of a roughly 103-point span between them.
+
+Loyalty against citizen share, 300 Baranians, service level 0.60, half the city
+enslaved:
+
+| Share | 100 % | 80 % | 67 % | 50 % | 40 % | 30 % |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `ENVIRONMENT_OTHERS` 2.5 | 2.006 | 1.823 | 1.698 | 1.188 | 0.966 | 0.797 |
+| **20** | 2.006 | 1.664 | 1.465 | 0.965 | 0.775 | 0.647 |
+
+The cliff moves from just under a third to about forty-five percent. A bare majority is
+now uncomfortable and anything less is untenable.
+
+`OTHER_RACES_REVERSE` stays at 0.9. The contempt is one-directional by design; what
+other races make of the Baranians is their own business.
