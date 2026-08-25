@@ -763,3 +763,27 @@ Emigration is unrelated to being outnumbered. `EventCitizen.getAmount()` reads o
 `STANDINGS.CITIZEN().loyalty`, so anything that lifts standing lifts loyalty and
 suppresses emigration. Both this entry and the 1.7 tolerance change work through that
 one channel.
+
+### 1.9
+
+`STATS > POPULATION_SLAVES_SELF` added as the counterpart to 1.8. The stat is defined
+in `StatsPopulation.java` line 183 as own-race slaves divided by own-race citizens plus
+one, so it measures how much of the race is in chains rather than how large the city is.
+
+```
+POPULATION_SLAVES_SELF: {
+	INVERTED: true,
+	CITIZEN: 6,
+	NOBLE: 6,
+	SLAVE: 0,
+	MULTIPLIER: 4,
+	PRIO: 5,
+},
+```
+
+`INVERTED` turns the value into a grievance. Weight 6 matches the harshest vanilla
+setting, used by Argonosh and Cantor, and outweighs the approval of foreign slaves
+three to one. `MULTIPLIER: 4` saturates at a quarter, so with a Baranian population
+this small a single one of them in chains is already a full outrage.
+
+The pair reads as one rule: slaves are correct, and Baranians are not slaves.
