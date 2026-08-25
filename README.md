@@ -900,3 +900,35 @@ the human rate:
 Nine runs per multiplier, all of them reaching a thousand. The line is kept at an
 explicit 1.0 rather than deleted; a multiplier of one is identity, so the file states
 the intent without changing the result.
+
+### 1.14
+
+`BEHAVIOUR_HAPPINESS>MUL: 1.5` added and `BEHAVIOUR_LOYALTY>ADD` raised from 0.25 to
+0.5. Both boostables sit directly in the chain that decides whether a citizen packs up:
+
+```
+happiness     = 1.0 (base) x fulfillment/expectation x race muls
+loyaltyTarget = (0 (base) + happiness + race adds) x race muls
+emigration    <- max(loyalty, loyaltyTarget) < 0.85
+```
+
+The fulfillment ratio enters happiness as a multiplier, so a race multiplier scales the
+whole thing. Happiness then enters loyalty as an *additive* booster, which is why a flat
+`>ADD` on loyalty is worth so much more than its size suggests.
+
+Service level needed to hold the break point, own city, half of it slaves:
+
+| Baranians | before | after |
+| ---: | ---: | ---: |
+| 200 | 0.368 | 0.204 |
+| 400 | 0.534 | 0.317 |
+| 700 | 0.709 | 0.436 |
+| 1000 | 0.845 | 0.526 |
+| 1500 | impossible | 0.647 |
+
+The 1500 row is the point of the change. Before it, the expectation curve made a
+Baranian city of that size unholdable no matter how well it was run.
+
+`EventCitizen.update` feeds the same per-race figure to riots, strikes and brawls, so
+the boost suppresses those on the same curve. Immigration also reads happiness, but
+`CIVIC_IMMIGRATION` is zero, so nothing arrives regardless.
