@@ -75,12 +75,12 @@ CHILDREN: [
 ],
 
 DESC:
-"Baranians are near-immortal exiles from a dead star. Peerless scholars, administrators and warriors, and born rulers. They breed once in a lifetime and almost never migrate, so a settlement will only ever hold a handful of them.",
+"Baranians are near-immortal exiles from a dead star. Peerless at every craft, unmatched in war, and born rulers. They breed once in a lifetime and almost never migrate, so a settlement will only ever hold a handful of them.",
 
 DESC_LONG:
 "The Baranians came down from a star that no longer burns. They wear a shape almost indistinguishable from man, which some take as kinship and others as camouflage.
 
-A Baranian lives for centuries. In that span one of them will learn more, build more and kill more than a dozen generations of anyone else. They are without equal in research, administration, statecraft and open battle, and they make extraordinary nobles.
+A Baranian lives for centuries. In that span one of them will learn more, build more and kill more than a dozen generations of anyone else. They cut stone faster than a gang of men, and a single one of them at a forge will out-produce the shift that replaced them. They are without equal in research, administration, statecraft and open battle, and they make extraordinary nobles.
 
 The price is the future. A Baranian bears about one child in four centuries, and their kind will not travel to a city that merely calls for workers. The line holds and slowly lengthens, but it never swells. However mighty your Baranians are, they will always be a few, and every one you lose costs you a hundred years.
 
@@ -102,12 +102,14 @@ ARMY_NAMES: [
 	"The Remnant Guard",
 ],
 
-CHALLENGE: "Hard",
+CHALLENGE: "Easy",
 
 PROS: [
 	"Live for centuries",
 	"Peerless at research, administration and statecraft",
 	"Devastating soldiers",
+	"Outwork any other species at every trade",
+	"Build, haul and mine at several times the normal rate",
 	"Born nobles, and allow more nobles and promotions",
 	"Sane, lawful and loyal",
 	"Low upkeep and rarely fall ill",
@@ -117,6 +119,6 @@ CONS: [
 	"Bear roughly one child in an entire lifetime",
 	"Almost never immigrate",
 	"Very long childhood",
-	"Poor miners and refiners",
 	"Expect grand surroundings",
+	"Too few to staff a city on their own",
 ],

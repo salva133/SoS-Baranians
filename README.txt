@@ -63,7 +63,7 @@ Base values are the game's defaults from game/boosting/BOOSTABLES.java.
 
 LIFE AND BODY
   Lifespan            base 100 years, x4.0    -> 400 max, ~349 on average
-  Health              base 1.0, x3.0
+  Health              base 1.0, x4.0
   Stamina             base 1.0, x2.5
   Speed               base 4.5, x1.25
   Acceleration        base 3.0, x1.25
@@ -73,15 +73,15 @@ LIFE AND BODY
   Reproduction speed  base 0.1, x0.060        -> see REPRODUCTION below
 
 BATTLE
-  Offence skill       base 1, x3.0
-  Defence skill       base 1, x3.0
-  Block               base 1, x2.5
-  Dexterity           base 5, x2.0
-  Charge              base 1, x2.0
-  Morale              base 4, x3.0
-  Bow                 base 0.1 per weapon, x2.0
-  Formation skill     base 0, +2.0
-  Blunt/slash/pierce  base 40 each, +60 attack and +60 defence
+  Offence skill       base 1, x4.0
+  Defence skill       base 1, x4.0
+  Block               base 1, x3.0
+  Dexterity           base 5, x2.5
+  Charge              base 1, x2.5
+  Morale              base 4, x4.0
+  Bow                 base 0.1 per weapon, x3.0
+  Formation skill     base 0, +3.0
+  Blunt/slash/pierce  base 40 each, +80 attack and +80 defence
 
 BEHAVIOUR
   Lawfulness          base 1.0, x2.0          -> barely any crime
@@ -119,20 +119,28 @@ NEEDS  (lower is better here, these are consumption rates)
   Grooming            x0.75
 
 ROOMS
-  every room          x1.5
-  University          x3.0
-  School              x3.0
-  Library             x3.0
-  Laboratory          x3.0
-  Admin               x3.0
-  all six mines       x0.6     clay, coal, gem, ore, sithilon, stone
-  all five refiners   x0.75    bakery, brewery, coaler, smelter, weaver
+  every room          x3.0     the broad dial, covers modded rooms too
+  University          x4.0
+  School              x4.0
+  Library             x4.0
+  Laboratory          x4.0
+  Admin               x4.0
+  Builder             x4.0
+  Hauler              x3.5
+  Transport           x3.5
+  Stockpile           x3.5
+  all six mines       x3.5     clay, coal, gem, ore, sithilon, stone
+  Barracks            x3.5
+  Archery             x3.5
+  Artillery           x3.5
+
+  Note that ROOM* also covers the ROOM_CONSUMPTION_* boostables, which are
+  a DIVISOR on input use (IndustryUtil.calcConsumptionRate). Output and
+  consumption rate rise together, so the net effect is roughly three times
+  the output for the same inputs rather than three times the raw throughput.
 
 WORLD MAP
-  Agriculture         x1.5
-  Mines               x1.5
-  Pasture             x1.5
-  Workforce points    x1.5
+  nothing, deliberately. See SCOPE below.
 
 TRAIT block  (personality traits rolled per individual, 0..1 occurrence)
   COMPETENT 1.0   TOLERANT 0.85   HONEST 0.7   WARRIOR 0.7   PROUD 0.6
@@ -191,7 +199,35 @@ do nothing, which is worse than a crash.
    Only relevant once several different sources touch the same boostable, for
    example a race boost plus a player level plus a trait.
 
-3. SETTLEMENT-WIDE BOOSTS ARE WEIGHTED BY POPULATION SHARE
+3. SCOPE: WHO ACTUALLY RECEIVES A RACE BOOST
+
+   RaceBoosts.BV builds one BValue per boosted stat, and which overload the
+   engine calls decides who benefits:
+
+     vGet(Induvidual)   that creature's race            per creature
+     vGet(Div)          that division's race            per army unit
+     vGet(HCLASS_RACE)  your settlement, weighted       your city only
+     vGet(Region)       that world region, weighted     anyone who owns it
+     vGet(FactionNPC)   the faction's capitol region    NPC factions
+     vGet(Player)       returns the neutral value       nothing
+
+   The consequence is that WORLD_* boostables are region scoped. They are
+   attached with BoostableCat.ALL().WORLD and evaluated per region through
+   vGet(Region), which averages over the races living in that region. Your
+   own settlement never reads them - the city runs on ROOM_* instead. So a
+   WORLD_BUILDING_MINE boost does nothing for your city, a little for world
+   regions you own, and exactly the same little for every NPC faction whose
+   provinces happen to hold Baranians.
+
+   That is why this mod sets no WORLD_* boosts at all. Adding them would
+   hand the enemy the same bonus for almost no gain to you, since Baranians
+   are capped at 3 percent of any region by POPULATION MAX.
+
+   PHYSICS_* and BATTLE_* are unavoidably universal: they resolve per
+   creature, so a Baranian in an NPC army is just as strong as one in yours.
+   A race mod cannot scope those to the player without scripting.
+
+4. SETTLEMENT-WIDE BOOSTS ARE WEIGHTED BY POPULATION SHARE
 
    Anything queried at the settlement level rather than per individual is
    averaged over your population, weighted by headcount (RaceBoosts.BV.vGet,
@@ -207,7 +243,7 @@ do nothing, which is worse than a crash.
    Baranian. Rarity and the noble bonus pull against each other by design; if
    you want the nobles to show up in a small elite, raise the ADD values.
 
-4. IMMIGRATION IS THROTTLED PER RACE, NOT CITY-WIDE
+5. IMMIGRATION IS THROTTLED PER RACE, NOT CITY-WIDE
 
    Immigration.java line 272 queries the boost with clP(race, CITIZEN), so
    CIVIC_IMMIGRATION>MUL 0.02 only throttles Baranians. Humans and everyone
@@ -218,21 +254,21 @@ do nothing, which is worse than a crash.
    the code returns the camp replenish rate and skips the boost entirely. A
    Baranian settlement on the world map next door defeats the throttle.
 
-5. THE TRAIT BLOCK IS CALLED "TRAIT", NOT "TRAITS"
+6. THE TRAIT BLOCK IS CALLED "TRAIT", NOT "TRAITS"
 
    TRAITS.serRaceData reads a block named TRAIT (the map key is the singular).
    Every vanilla race file carries a TRAITS block full of FIGHTER, GLUTTON and
    SPRINTER, and none of it is read by anything. Valid trait keys are the file
    names in assets\init\race\trait\.
 
-6. DEAD KEYS IN THE VANILLA FILES
+7. DEAD KEYS IN THE VANILLA FILES
 
    TECH is not read anywhere in the source. PORTRAIT_FILE in the sprite
    definition is not read either; portraits are assembled from the shared
    face part sheets via the FACE block. ADULT_AT_DAY in PROPERTIES is likewise
    ignored; adulthood is BABY_DAYS + CHILD_DAYS.
 
-7. VALUE RANGES ARE CLAMPED SILENTLY
+8. VALUE RANGES ARE CLAMPED SILENTLY
 
    POPULATION MAX is clamped 0..1, GROWTH 0.0001..1, CLIMATE entries 0..1,
    TERRAIN 0..100, TRAIT occurrence 0..1, structure and road preferences 0..1,
@@ -385,7 +421,7 @@ Noble slots       CIVIC_NOBLES_MAX>ADD and CIVIC_NOBLES_RANKS_MAX>ADD.
 
 Noble quality     NOBLE_COMPETENCE>ADD plus the TRAIT block.
 
-Power level       ROOM*>MUL 1.5 is the broad "good at everything" dial.
+Power level       ROOM*>MUL 3.0 is the broad "good at everything" dial.
                   CIVIC_KNOWLEDGE>ADD 150 is the research dial; vanilla player
                   levels sit between 35 and 200, so this is roughly one extra
                   title's worth of research at full Baranian population.
@@ -394,11 +430,6 @@ Power level       ROOM*>MUL 1.5 is the broad "good at everything" dial.
 --------------------------------------------------------------------------------
 KNOWN INCONSISTENCIES
 --------------------------------------------------------------------------------
-
-WORLD_BUILDING_MINE*>MUL is 1.5 while the settlement mines are 0.6. Baranians
-are therefore bad miners inside your city but good ones on the world map. Left
-as is deliberately, but flip it to 0.6 if you want the theme to hold
-everywhere.
 
 The race is not balanced against the vanilla species and is not meant to be.
 It was built to the brief "absolutely overpowered, but almost never reproduces
@@ -425,3 +456,26 @@ CHANGELOG
 
       Sprite art split out into own files (copies of the human art) so the
       Baranians can be repainted without touching the human race.
+
+1.2   Production, construction and combat raised to match the brief.
+
+      Mines went from a 0.6 penalty to a 3.5 bonus, and the matching WORK
+      preferences flipped from negative to positive so Baranians are no
+      longer unhappy doing the job they are now good at. Refiners and
+      workshops likewise.
+
+      ROOM*>MUL raised from 1.5 to 3.0, so every room including those added
+      by other mods is covered. Builder, hauler, transport, stockpile,
+      barracks, archery and artillery called out explicitly above that.
+
+      Battle skills raised from x3.0 to x4.0, morale to x4.0, block to x3.0,
+      bow to x3.0, formation to +3.0, every damage type from +60 to +80, and
+      health from x3.0 to x4.0.
+
+      PROS/CONS and the description corrected: the mining weakness is gone,
+      and CHALLENGE dropped from Hard to Easy, which is now honest.
+
+1.3   All WORLD_* boosts removed. They are evaluated per world region, not
+      per settlement, so they did nothing for your own city while handing
+      every NPC faction with Baranians in its provinces the identical bonus.
+      The advantage now lives entirely inside your own walls.
