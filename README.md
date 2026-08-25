@@ -733,3 +733,33 @@ entry in our own file wins outright.
 
 `OTHER_RACES_REVERSE` is deliberately left at 0.9. That is what everyone else thinks
 of the Baranians, and there is no reason a stranger should warm to them.
+
+### 1.8
+
+`STATS > POPULATION_SLAVES_OTHER` added. The stat is the share of the total population
+held as slaves, defined in `StatsPopulation.java` line 195. Left uninverted it reads as
+a virtue, so a Baranian's standing rises with the size of the slave force.
+
+```
+POPULATION_SLAVES_OTHER: {
+	CITIZEN: 2.0,
+	NOBLE: 2.0,
+	SLAVE: 0,
+	MULTIPLIER: 2,
+	PRIO: 5,
+},
+```
+
+`MULTIPLIER: 2` means the value saturates at a city that is half slaves rather than
+demanding a city that is nothing but slaves. Weight 2.0 places it above every other
+standing entry the race carries. Argonosh is the vanilla comparison at `CITIZEN: 1.5`
+with no multiplier; Cretonians and Dondorians set the same stat `INVERTED`, which is
+why they resent a city full of slaves.
+
+`SLAVE: 0` keeps Baranian slaves out of it. A Baranian in chains has no opinion worth
+modelling on the subject.
+
+Emigration is unrelated to being outnumbered. `EventCitizen.getAmount()` reads only
+`STANDINGS.CITIZEN().loyalty`, so anything that lifts standing lifts loyalty and
+suppresses emigration. Both this entry and the 1.7 tolerance change work through that
+one channel.
