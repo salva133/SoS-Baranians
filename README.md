@@ -718,3 +718,18 @@ references in the sprite file repointed at them. See **Names** above.
 `Exilebourne` and `Farexile`, to match the `Of the Exile` attribution in
 `Quotes.txt`. The ordinal survives only as an army name in
 `V71\assets\text\race\BARANIAN.txt`.
+
+### 1.7
+
+`PREFERRED > OTHER_RACES` raised from a blanket `*: 0.8` to 1.0, with every vanilla
+race also listed explicitly. Baranians no longer take the discrimination penalty from
+living in a city whose population is mostly other races, which in practice means a
+city staffed by foreign slaves. The wildcard stays for modded races.
+
+Explicit entries matter here. A wildcard is a weak match and loses to any strong entry
+another race declares through its own `OTHER_RACES_REVERSE`, the way ARGONOSH does.
+The forward pass runs after the reverse pass in `RacePreferrence.init()`, so a strong
+entry in our own file wins outright.
+
+`OTHER_RACES_REVERSE` is deliberately left at 0.9. That is what everyone else thinks
+of the Baranians, and there is no reason a stranger should warm to them.

@@ -91,7 +91,15 @@ PREFERRED: {
 		WORKSHOP_TAILOR: 1.0,
 	},
 	OTHER_RACES: {
-		*: 0.8,
+		*: 1.0,
+		HUMAN: 1.0,
+		CRETONIAN: 1.0,
+		DONDORIAN: 1.0,
+		TILAPI: 1.0,
+		GARTHIMI: 1.0,
+		Q_AMEVIA: 1.0,
+		CANTOR: 1.0,
+		ARGONOSH: 1.0,
 	},
 	OTHER_RACES_REVERSE: {
 		*: 0.9,
