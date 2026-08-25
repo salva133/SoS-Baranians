@@ -1019,3 +1019,28 @@ now uncomfortable and anything less is untenable.
 
 `OTHER_RACES_REVERSE` stays at 0.9. The contempt is one-directional by design; what
 other races make of the Baranians is their own business.
+
+### 1.18
+
+`POPULATION_MAJORITY` halved from 40 to 20, matching `ENVIRONMENT_OTHERS`. Both still
+hang off the same citizen share, so 1.15 and 1.17 were stacking to 60 points of a
+107.5-point span; that is now 40.
+
+`BEHAVIOUR_HAPPINESS>MUL` is 2.5 as set by hand. Loyalty against citizen share at
+service level 0.60, half the city enslaved, and the share below which they emigrate:
+
+| `POPULATION_MAJORITY` | 67 % | 50 % | 40 % | 30 % | 20 % | Cliff |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 40 | 2.108 | 1.275 | 0.958 | 0.746 | 0.615 | 35.5 % |
+| **20** | 2.108 | 1.477 | 1.194 | 0.967 | 0.790 | **23.7 %** |
+| 1.5 (vanilla) | 2.108 | 1.693 | 1.472 | 1.265 | 1.065 | 9.5 % |
+
+Everything at or above a two-thirds share is identical in all three rows, because
+`MULTIPLIER: 1.5` saturates there. The weight only decides how steeply the curve falls
+below that point.
+
+The collapse reported after raising the happiness multiplier was not caused by the
+multiplier. `CitizenBoost.update` returns the raw boostable value and `CitizenMain`
+prints it with `GFORMAT.perc` unnormalised, so the multiplier is a clean linear factor.
+What fell was `fulfillment`, through `HAPPINESS_EXPONENT: 2.65` in `init/config/Sett.txt`,
+which turns a linear loss of standing points into a cubic one.
