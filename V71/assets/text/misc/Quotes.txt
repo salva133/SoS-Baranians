@@ -1,0 +1,24 @@
+_JSON_ADD: true,
+_ARRAY_ADD: true,
+
+QUOTES: [
+
+""We measure a life in centuries, and a grudge in the same. Choose carefully whom you wrong.":::-The Ashen Order",
+""Your kind builds as though the wall must outlast the builder. We build as though the builder must outlast the wall.":::-A Baranian archivist",
+""Many of us still remember the old times, the glorious times, of purity and unity. We merely had to adapt":::-Of the Exile",
+""Forty. Only forty souls were able to leave our world. Now we have only this one. And we will make it our realm, for we are timeless.":::-Warden of the Dead Star",
+""To bear a child means, to carry the future of our people. Blessed be the mother deemed worthy to bear.":::-The Ashen Order",
+""Patience is a luxury that you cannot possibly comprehend. We have an abundance of it, far beyond what your time constraints allow.":::-The Unhurried",
+""...and he spake, saying: "O Eternal One, wilt thou vouchsafe unto this my petition, that thou teach me all which thou hast witnessed and known?" And she mused deeply thereupon; and her heart was resolved; yet when she parted her lips to render answer, behold, only dry bones received her utterance.":::-Chronicle of the Fading Sun, 35:4",
+""Empires come and go, just like the seasons for you.":::-Brother Wewel the Defiant",
+
+**""":::-The Ashen Order",
+**""":::-A Baranian archivist",
+**""":::-Warden of the Dead Star",
+**""":::-The Unhurried",
+**""":::-Of the Exile",
+**""":::-Keepers of the Cold Fire",
+**""":::-The Starless Host",
+**""":::-The Remnant Guard",
+
+],

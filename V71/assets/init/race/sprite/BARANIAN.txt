@@ -1,6 +1,6 @@
 SLEEP_FILE: Blanket,
 SPRITE_EXTRA_FILE: Normal,
-NAMESET_FILE_NOBLE: StdLastNoble,
+NAMESET_FILE_NOBLE: BaranianLastNoble,
 
 WORLD: {
 	TOWN: Human,
@@ -218,8 +218,8 @@ CHILD: {
 	
 	SPRITE_FILE: ChildHumanoid,
 	SPRITE_SKELLETON_FILE: Humanoid_small,
-	NAMESET_FILE_FIRST: StdFirst,
-	NAMESET_FILE_SURNAME: StdLast,
+	NAMESET_FILE_FIRST: BaranianFirst,
+	NAMESET_FILE_SURNAME: BaranianLast,
 	
 	ADDONS: [
 		{
@@ -269,8 +269,8 @@ TYPES: [
 		
 		SPRITE_FILE: Baranian,
 		SPRITE_SKELLETON_FILE: Humanoid,
-		NAMESET_FILE_FIRST: StdFirst,
-		NAMESET_FILE_SURNAME: StdLast,
+		NAMESET_FILE_FIRST: BaranianFirst,
+		NAMESET_FILE_SURNAME: BaranianLast,
 		PORTRAIT_FILE: Human,
 	
 		ADDONS: [
@@ -679,8 +679,8 @@ TYPES: [
 		
 		SPRITE_FILE: Baranian,
 		SPRITE_SKELLETON_FILE: Humanoid,
-		NAMESET_FILE_FIRST: StdFemaleFirst,
-		NAMESET_FILE_SURNAME: StdLast,
+		NAMESET_FILE_FIRST: BaranianFemaleFirst,
+		NAMESET_FILE_SURNAME: BaranianLast,
 		PORTRAIT_FILE: Human,
 					
 		SET_APPEARANCE_STATS: {

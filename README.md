@@ -45,6 +45,11 @@ Songs of Syx are otherwise silent, or only land in the error log at
 | `V71\assets\init\race\sprite\BARANIAN.txt` | appearance definition |
 | `V71\assets\text\race\BARANIAN.txt` | name, description, pros/cons |
 | `V71\assets\text\race\bio\specific\Baranian.txt` | citizen biography lines |
+| `V71\assets\text\misc\Quotes.txt` | loading screen quotes |
+| `V71\assets\text\names\nameset\BaranianFirst.txt` | male and child first names, 367 |
+| `V71\assets\text\names\nameset\BaranianFemaleFirst.txt` | female first names, 159 |
+| `V71\assets\text\names\nameset\BaranianLast.txt` | surnames, 454 |
+| `V71\assets\text\names\nameset\BaranianLastNoble.txt` | noble surnames, 133 |
 
 | Sprite | Size |
 | --- | --- |
@@ -463,6 +468,149 @@ still points at the vanilla human tiles and can stay that way.
 
 ---
 
+## Loading screen quotes
+
+The loading screen picks a random entry from `assets\text\misc\Quotes.txt`, read in
+`RLoadPrinter` as key `QUOTES`. Each entry is one string holding both the quote and
+its attribution, separated by `:::`:
+
+```
+""Kingdoms are a weather to us.":::-The Ashen Order",
+```
+
+The outer quotes delimit the string. The inner pair is displayed, so the text shows
+up in quotation marks the way vanilla does it. The part after `:::` is rendered
+underneath as the author.
+
+### Appending instead of replacing
+
+A mod file with the same path replaces the vanilla file wholesale, which would wipe
+all 34 vanilla quotes. To append, the file needs **both** flags at the top:
+
+```
+_JSON_ADD: true,
+_ARRAY_ADD: true,
+```
+
+`_ARRAY_ADD` alone does nothing. In `JsonValueJson.overwrite` the recursion into an
+existing key only happens when `jsonAdd` is set — otherwise the key is replaced with
+`putReplace` and the array-level `arrayAdd` flag is never reached. Verified: vanilla
+34 + this mod's 8 = 42 entries.
+
+### Traps
+
+| Written as | Result |
+| --- | --- |
+| `""text":::-Author"` | correct |
+| `""text"::-Author"` | also works, `::` is the fallback separator |
+| `""text"` — no separator | **quote and author both render empty.** A blank loading screen, logged only as `unable to parse` |
+| `""text":::"` — nothing after | author renders as a stray `:` |
+| `""text":::-"` | author renders as a lone dash, harmless |
+
+So every entry must carry a separator with something after it. There is no error, no
+crash, and nothing in the launcher — a forgotten `:::` simply produces an empty
+screen. Avoid `:::` inside the quote text itself for the same reason.
+
+### Quotation marks and apostrophes inside the text
+
+`JsonValue.findValue` is called with `"` as both the opening and the closing
+character, so its nesting counter decrements and increments on the very same
+character and never leaves zero. The whole rule reduces to one line:
+
+> The string ends at the first `"` that is **immediately** followed by a comma.
+
+Everything else is ordinary text. In particular:
+
+| Inside the quote | Result |
+| --- | --- |
+| `'` apostrophes, any number | fine, the parser does not look at them |
+| a nested `"..."` pair | fine, as long as its closing `"` is not directly before a comma |
+| `..."yes", he said` | **hard parse error**, `The entry is not a string`. This is a thrown `Errors.DataError`, not a warning — it takes the game down |
+| `..."yes" , he said` | fine. The check is `charAt(i+1) == ','` exactly, so one space defuses it |
+| `..."sticks".` | fine, and this is how vanilla does it |
+
+Vanilla contains exactly this case and solves it by putting the sentence period
+after the inner closing quote:
+
+```
+""The preacher was chained ... to which he replied "I bear no ill will towards
+these fools, nor do I towards stones or sticks".":::-Chronicles of the Third Age 49:87",
+```
+
+Note the `sticks".` — period after the quote, never `sticks",`.
+
+Single colons are harmless, which is why `49:87` in that attribution works.
+
+### Characters that render
+
+`assets\init\config\Charset.txt` defines the font's glyph set. The default western
+charset covers ASCII plus the full Latin-1 range, so German umlauts and `ß` display
+correctly. It does **not** contain typographic punctuation: the curly quotes `“ ” ‘ ’`
+and the en and em dash `– —` are all missing. Draft the text in a plain editor, or
+a word processor's autocorrect will silently replace your straight `'` with a
+character the font cannot draw.
+
+`**` at the start of a line comments it out, inside the array as well. The skeleton
+uses that for the empty slots, so unfilled ones cannot reach the screen.
+
+### Not usable for tips
+
+`assets\text\misc\Advice.txt` looks similar but is not extensible: `EventAdvisor`
+hardcodes the four keys `WORKFORCE`, `SICKNESS`, `CRIME` and `LOYALTY` in Java. A mod
+can reword those, not add new ones. `assets\init\event\HINT.txt` is a full event
+with trigger conditions and choices, not a one-liner.
+
+---
+
+## Names
+
+Until 1.6 the Baranians had no name set of their own. Their sprite file was a copy of
+the human one and pointed at the shared `Std*` lists, so a Baranian was named exactly
+like a human and any name mod installed alongside silently renamed them too.
+
+They now carry four dedicated lists under `V71\assets\text\names\nameset`. Each one
+begins with the complete human list as it stands on this installation, in the original
+order, and appends the Baranian names after it. Nothing that could appear before can
+stop appearing, so an existing save keeps every name it already handed out.
+
+| List | Human base | Baranian additions | Total |
+| --- | --- | --- | --- |
+| `BaranianFirst` | 269 | 98 | 367 |
+| `BaranianFemaleFirst` | 79 | 80 | 159 |
+| `BaranianLast` | 372 | 82 | 454 |
+| `BaranianLastNoble` | 96 | 37 | 133 |
+
+The human base is taken from the *active* lists, that is vanilla plus Argo's Names
+Expanded, workshop 3748583275, which replaces the four `Std*` files outright rather
+than merging into them. If that mod is uninstalled the Baranian lists are unaffected,
+they are self-contained.
+
+The additions draw on three registers, kept deliberately mixed so a Baranian settlement
+does not read as a single monoculture:
+
+- Arkonide and Perry Rhodan material for the long-lived star-people register:
+  Atlan, Gonozal, Orbanaschol, Fartuloon, Crest, Thora, Farnathia.
+- The star's own names across traditions: *al-dabaran* the Follower, Latin
+  *Palilicium*, Sanskrit *Rohini*, the Hyades, *Alnath* and *Elnath* on the
+  neighbouring horn of Taurus. Hence Dabaran, Palilion, Rohinar, Hyador, Elnath.
+- The mod's own lore, rendered as English compound surnames the way vanilla does it:
+  Ashenveil, Starless, Deadstar, Longwatch, Undiminished, Coldfire, Exilebourne,
+  Vaultkeeper, Silentcolumn.
+
+Noble surnames follow the vanilla shapes, either `of <place>` or a `-stein` / `-berg`
+compound, so Baranian nobles sit alongside human ones without looking pasted in:
+of the Ashen Order, of Palilicium, of the Hyades, Aldebstein, Baranberg, Hyadstein.
+
+Four references in `V71\assets\init\race\sprite\BARANIAN.txt` point at the lists:
+`NAMESET_FILE_NOBLE` at the top, and `NAMESET_FILE_FIRST` / `NAMESET_FILE_SURNAME`
+in each of the CHILD, male and female blocks. To go back to human names, set those
+seven lines to `StdLastNoble`, `StdFirst`, `StdFemaleFirst` and `StdLast` again.
+
+The engine cap is `StatsAppearance.NAME_MAX`, 4095 entries per list, so there is
+room for roughly ten times the current count.
+
+---
+
 ## Tuning dials
 
 **Rarity** — `POPULATION MAX` 0.03 caps their share of any world region.
@@ -546,6 +694,12 @@ settlement, so they did nothing for your own city while handing every NPC factio
 with Baranians in its provinces the identical bonus. The advantage now lives entirely
 inside your own walls.
 
+### 1.5
+
+Loading screen quotes added, `assets\text\misc\Quotes.txt`, with eight filled
+entries and eight commented-out slots. Uses `_JSON_ADD` plus `_ARRAY_ADD` so the
+vanilla quotes survive.
+
 ### 1.4
 
 `ROOM_BUILDER`, `ROOM_HAULER` and `ROOM_TRANSPORT` removed. They are not boostables,
@@ -553,3 +707,14 @@ so the game logged `no BOOSTABLE named` for each and the values did nothing. Tho
 three rooms carry no work-rate boost in the engine. `ROOM_STOCKPILE` is real and
 stays. Every key is now checked against `BOOSTING.available()` from the game's own
 log rather than against the vanilla room file names, which over-generate.
+
+### 1.6
+
+Own name set. Four lists under `V71\assets\text\names\nameset`, each carrying the
+full human list first and Baranian names after it, and the seven `NAMESET_FILE_*`
+references in the sprite file repointed at them. See **Names** above.
+
+`Secondexile` and `of the Second Exile` were removed again in favour of the plain
+`Exilebourne` and `Farexile`, to match the `Of the Exile` attribution in
+`Quotes.txt`. The ordinal survives only as an army name in
+`V71\assets\text\race\BARANIAN.txt`.
