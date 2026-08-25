@@ -932,3 +932,57 @@ Baranian city of that size unholdable no matter how well it was run.
 `EventCitizen.update` feeds the same per-race figure to riots, strikes and brawls, so
 the boost suppresses those on the same curve. Immigration also reads happiness, but
 `CIVIC_IMMIGRATION` is zero, so nothing arrives regardless.
+
+### 1.15
+
+`STATS > POPULATION_MAJORITY` overridden at weight 40, up from the vanilla 1.5. The
+stat is own-race share of the **citizen** class, defined in `StatsPopulation.java`
+line 169, and its default input is 1, so the full weight is already granted in `def`
+and a minority loses it point for point.
+
+Slaves are a different `HCLASS` and are not counted, so this entry and the slave
+approval of 1.8 do not fight each other. Baranians must dominate the citizenry; the
+slave quarters may hold whatever they like.
+
+`MULTIPLIER: 1.5` saturates at a two-thirds share, giving a margin above a bare
+majority. Loyalty against citizen share, 300 Baranians, service level 0.60, half the
+city enslaved:
+
+| Share | 100 % | 80 % | 67 % | 50 % | 40 % | 30 % | 20 % |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Loyalty | 2.006 | 1.847 | 1.734 | 1.224 | 0.999 | 0.825 | 0.693 |
+
+Below 0.85 they leave. The cliff sits just under a third at that service level, and at
+0.45 it climbs to nearly half.
+
+### 1.16
+
+Combat set to six times the strongest vanilla race, per boostable. The six flat `+80`
+damage entries are gone; everything is now a multiplier on the engine base, which is
+what makes the factor exact.
+
+| Boostable | Base | Strongest vanilla | Target | Baranian |
+| --- | ---: | --- | ---: | --- |
+| `OFFENCE_SKILL` | 1 | Q_AMEVIA 1.10 | 6.60 | `>MUL: 6.6` |
+| `DEFENCE_SKILL` | 1 | base 1.00 | 6.00 | `>MUL: 6.0` |
+| `BLOCK` | 1 | DONDORIAN 1.25 | 7.50 | `>MUL: 7.5` |
+| `DEXTERITY` | 5 | TILAPI 6.25 | 37.50 | `>MUL: 7.5` |
+| `CHARGE` | 1 | base 1.00 | 6.00 | `>MUL: 6.0` |
+| `MORALE` | 4 | CANTOR 12.00 | 72.00 | `>MUL: 18.0` |
+| `RANGED_BOW` | 1 | TILAPI 1.50 | 9.00 | `>MUL: 9.0` |
+| `FORMATION_SKILL` | 0 | DONDORIAN 0.50 | 3.00 | `>ADD: 3.0` |
+| `BLUNT_ATTACK` | 40 | CANTOR 340.00 | 2040.00 | `>MUL: 51.0` |
+| `BLUNT_DEFENCE` | 40 | CANTOR 290.00 | 1740.00 | `>MUL: 43.5` |
+| `SLASH_ATTACK` | 40 | GARTHIMI 40.50 | 243.00 | `>MUL: 6.075` |
+| `SLASH_DEFENCE` | 40 | GARTHIMI 42.00 | 252.00 | `>MUL: 6.3` |
+| `PIERCE_ATTACK` | 40 | ARGONOSH 41.00 | 246.00 | `>MUL: 6.15` |
+| `PIERCE_DEFENCE` | 40 | ARGONOSH 42.00 | 252.00 | `>MUL: 6.3` |
+
+`FORMATION_SKILL` has a base of 0, so a multiplier cannot move it and the target is
+expressed as an add.
+
+The blunt figures are dominated by CANTOR, which is `PLAYABLE: false`, twelve by
+thirteen tiles, and functions as a war beast rather than a people. Six times its blunt
+attack is fifty-one times the engine base. Restricting the reference to the six
+playable races gives `BLUNT_ATTACK>MUL: 9.0`, `BLUNT_DEFENCE>MUL: 6.0` and
+`MORALE>MUL: 7.2` instead; the other twelve rows are unchanged.
