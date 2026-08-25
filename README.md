@@ -1074,3 +1074,29 @@ be catastrophic.
 
 One side effect worth noting: `STANDINGS` publishes `LOYALTY_<race>` as a faction
 GVALUE, which world-map conditions can read. Raising the floor raises that too.
+
+### 1.20
+
+`BABY_DAYS` 24 to 12 and `CHILD_DAYS` 200 to 80, the human figures. `Physics` sums the
+two into `adultDay`, so a Baranian is grown at 92 days rather than 224, five and three
+quarter years instead of fourteen.
+
+This is not a cosmetic change. `StatsReproduction` line 207 sets the fertile window as
+`from = ceil(1.5 * adultDay)`, so fertility now begins in year 8.6 instead of year 21.
+Against a 400-year lifespan the window barely changes at the top, but every generation
+starts producing twelve years earlier, and the compounding is what matters.
+
+The 1.13 calibration is void. At `REPRODUCTION_SPEED>MUL: 1.0` ten founders now reach a
+thousand in a median year 82, not 120:
+
+| Multiplier | Median year at 1000 |
+| ---: | ---: |
+| 1.00 | 82 |
+| 0.60 | 117 |
+| 0.58 | 120 |
+| 0.55 | 125 |
+| 0.50 | 134 |
+| 0.45 | 147 |
+
+The multiplier is left at 1.0. Restoring the year-120 target would mean 0.58, which is
+a decision about pacing rather than a correction.
