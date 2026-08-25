@@ -157,10 +157,14 @@ These are consumption rates, so lower is better.
 | --- | --- |
 | every room (`ROOM*`) | ×3.0 — the broad dial, covers modded rooms too |
 | University, School, Library, Laboratory, Admin | ×4.0 |
-| Builder | ×4.0 |
-| Hauler, Transport, Stockpile | ×3.5 |
+| Stockpile | ×3.5 |
 | all six mines (clay, coal, gem, ore, sithilon, stone) | ×3.5 |
 | Barracks, Archery, Artillery | ×3.5 |
+
+Construction speed cannot be boosted from a race file. The builder, hauler and
+transport rooms register **no** boostable at all — `ROOM_BUILDER`, `ROOM_HAULER`
+and `ROOM_TRANSPORT` do not exist, and neither does any `CONSTRUCTION_*` key. Only
+`PHYSICS_SPEED` helps indirectly, by moving the builders around faster.
 
 `ROOM*` also covers the `ROOM_CONSUMPTION_*` boostables, which are a **divisor** on
 input use (`IndustryUtil.calcConsumptionRate`). Output and consumption rate rise
@@ -307,7 +311,22 @@ not read either; portraits are assembled from the shared face part sheets via th
 `FACE` block. `ADULT_AT_DAY` in `PROPERTIES` is likewise ignored — adulthood is
 `BABY_DAYS + CHILD_DAYS`.
 
-### 8. Value ranges are clamped silently
+### 8. Not every room has a boostable
+
+Do not assume that a room file in `assets\init\room\` implies a boostable named
+`ROOM_<key>`. Only rooms whose blueprint extends `RoomBlueprintIns` register one.
+`_STOCKPILE` gives `ROOM_STOCKPILE`, but `_BUILDER`, `_HAULER` and `_TRANSPORT` give
+nothing. Leading underscores are also stripped inconsistently: vanilla `_CANNIBAL`
+ends up as `ROOM__CANNIBAL`, with two underscores.
+
+The authoritative list is printed by the game itself. Enable DEVELOPER and DEBUG,
+reference one deliberately bogus key, and `BOOSTING.available()` dumps every valid
+boostable as `KEY  - Name` lines into
+`AppData\Roaming\songsofsyx\logs\UnhandledDump.txt`. On this install that is 537
+entries, 116 of them `ROOM_*` — and that list already includes the boostables added
+by your other mods, which no amount of reading the vanilla files will tell you.
+
+### 9. Value ranges are clamped silently
 
 `POPULATION MAX` is clamped 0..1, `GROWTH` 0.0001..1, `CLIMATE` entries 0..1,
 `TERRAIN` 0..100, `TRAIT` occurrence 0..1, structure and road preferences 0..1, `WORK`
@@ -526,3 +545,11 @@ All `WORLD_*` boosts removed. They are evaluated per world region, not per
 settlement, so they did nothing for your own city while handing every NPC faction
 with Baranians in its provinces the identical bonus. The advantage now lives entirely
 inside your own walls.
+
+### 1.4
+
+`ROOM_BUILDER`, `ROOM_HAULER` and `ROOM_TRANSPORT` removed. They are not boostables,
+so the game logged `no BOOSTABLE named` for each and the values did nothing. Those
+three rooms carry no work-rate boost in the engine. `ROOM_STOCKPILE` is real and
+stays. Every key is now checked against `BOOSTING.available()` from the game's own
+log rather than against the vanilla room file names, which over-generate.
