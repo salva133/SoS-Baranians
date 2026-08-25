@@ -858,3 +858,24 @@ steeply with its own size:
 Past roughly 700 the city has to be run close to perfectly or they emigrate, and with
 immigration at zero that valve only ever drains. The soft ceiling is real, it simply
 sits in the happiness system instead of the birth rate.
+
+### 1.12
+
+`PHYSICS_REPRODUCTION_SPEED>MUL: 2.0`, twice the human rate. Note that the engine's
+own population ramp in `StatsReproduction` multiplies on top of this, so the effective
+rate still climbs from a fifth of nominal towards full as the city approaches 2000
+citizens.
+
+Median year at which a colony of four founders reaches a given size, ten simulated
+runs against the engine's reproduction loop and death distribution:
+
+| Size | at 1.0 | at 2.0 |
+| ---: | ---: | ---: |
+| 50 | 63 | 42 |
+| 100 | 82 | 57 |
+| 200 | 99 | 71 |
+| 500 | 124 | 89 |
+| 1000 | 143 | 103 |
+
+No run went extinct at either rate. The doubling shortens the climb to a thousand by
+about forty years, which is roughly one long Baranian lifetime.
