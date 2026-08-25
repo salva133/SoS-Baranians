@@ -782,8 +782,79 @@ POPULATION_SLAVES_SELF: {
 ```
 
 `INVERTED` turns the value into a grievance. Weight 6 matches the harshest vanilla
-setting, used by Argonosh and Cantor, and outweighs the approval of foreign slaves
-three to one. `MULTIPLIER: 4` saturates at a quarter, so with a Baranian population
+setting, used by Argonosh and Cantor. `MULTIPLIER: 4` saturates at a quarter, so with a Baranian population
 this small a single one of them in chains is already a full outrage.
 
 The pair reads as one rule: slaves are correct, and Baranians are not slaves.
+
+### 1.10
+
+`POPULATION_SLAVES_OTHER` raised from 2.0 to 6.0 for both CITIZEN and NOBLE. At 2.0
+the entry was worth 1.9 % of the 103.5-point achievable standing span, which in a
+city of a thousand moved the emigration threshold by two percentage points of service
+level. Simulating the chain in `EventCitizen.getAmount` back through `StandingCitizen`
+gives, for twenty Baranians in a city of a thousand, the service level below which
+they leave:
+
+| Slave share | weight 0.5 (vanilla) | weight 2.0 | weight 6.0 |
+| --- | --- | --- | --- |
+| 0 % | 0.353 | 0.360 | 0.377 |
+| 50 % | 0.348 | 0.339 | 0.314 |
+
+The entry now cuts the required service level by a sixth rather than a twentieth. It
+still saturates at a city that is half slaves, because `MULTIPLIER: 2` is unchanged.
+
+Approval and grievance now carry the same weight of 6. The grievance bites harder in
+practice because `MULTIPLIER: 4` saturates it at a quarter while the approval needs a
+half.
+
+### 1.11
+
+Immigration cut to nothing and reproduction returned to human standard.
+
+| Key | Was | Is |
+| --- | --- | --- |
+| `CIVIC_IMMIGRATION>MUL` | 0.02 | 0 |
+| `RAID_MERCINARY` | 0.05 | 0 |
+| `POPULATION > GROWTH` | 0.0005 | 0.0001 |
+| `PHYSICS_REPRODUCTION_SPEED>MUL` | 0.060 | removed, so 1.0 |
+
+`Immigration.Immigrator.speed()` returns `rate * CIVIC_IMMIGRATION`, so a multiplier of
+zero means the pool timer never advances and `wanted()` clamps to zero forever. No
+Baranian can ever walk in. `RAID_MERCINARY: 0` removes them from the pool bandit raids
+draw from, so they cannot arrive as captives either. Every Baranian in the city is now
+born there.
+
+`POPULATION > MAX` stays at 0.03 and must not go to zero. `StandingCitizen.expectation`
+computes `pe = 1.0/race.population().max`, and `Immigration.auto` reads `max == 0` as
+permission to auto-admit everything. Zero there would divide by zero and hand the race
+infinite expectations.
+
+Reproduction at 1.0 with a 400-year lifespan is not slow. Simulating the engine's own
+`StatsReproduction` loop against the skewed death distribution, four founders reach a
+thousand in roughly 140 to 160 years and keep going exponentially after that.
+
+A population-dependent slowdown is not expressible in a race file. The only dynamic
+multipliers on `PHYSICS_REPRODUCTION_SPEED` are two boosters hardcoded in
+`StatsReproduction`: the player's per-race slider, and a ramp from 0.2 to 1.0 as total
+citizens approach 2000, which pushes the wrong way. The one hard cutoff is
+`StatsReproduction.limit`, the *Births Allowed* figure in the population panel. It is
+savegame state, defaults to 40000, and stops births dead when reached. Setting it to
+1000 gives the requested ceiling as a wall rather than a ramp.
+
+The engine does damp growth by itself, through expectations rather than fertility.
+Because expectation scales with own-race population and is multiplied by `1/0.03`,
+the service level a Baranian city needs to stay above the loyalty break point climbs
+steeply with its own size:
+
+| Baranians (own city) | Service level needed, no slaves | with 50 % slaves |
+| ---: | ---: | ---: |
+| 20 | 0.100 | 0.053 |
+| 100 | 0.302 | 0.241 |
+| 400 | 0.599 | 0.534 |
+| 700 | 0.777 | 0.709 |
+| 1000 | 0.914 | 0.845 |
+
+Past roughly 700 the city has to be run close to perfectly or they emigrate, and with
+immigration at zero that valve only ever drains. The soft ceiling is real, it simply
+sits in the happiness system instead of the birth rate.
